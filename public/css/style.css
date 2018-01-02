@@ -1,0 +1,19 @@
+a:hover {
+	text-decoration: none;
+}
+
+textarea {
+	resize: none;
+}
+
+#btn-filter {
+	margin-top: 2px;
+}
+
+#filter {
+	display: none;
+}
+
+.form-control {
+	width: 150px;
+}

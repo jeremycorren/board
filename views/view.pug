@@ -1,0 +1,27 @@
+extends base.pug
+
+block content
+	.media
+		.media-body
+			h5= card.task
+			p= card.description
+			form(method='POST')
+				.form-group
+					input.form-control(
+						type='text'
+						name='filter'
+						id='filter'
+						value=card.category
+					)
+				.form-group
+					button.btn.btn-info.btn-xs(
+						type='submit'
+						title='Filter cards by this category'
+					)= card.category
+			p
+
+			a(href=`/board/${card.id}/edit`, class='btn btn-success btn-sm')
+				i.glyphicon.glyphicon-edit
+			span &nbsp;
+			a(href=`/board/${card.id}/delete`, class='btn btn-success btn-sm')
+				i.glyphicon.glyphicon-trash
