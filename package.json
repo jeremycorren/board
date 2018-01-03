@@ -1,6 +1,10 @@
 {
-  "name": "kanban",
+  "name": "board",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeremycorren/board.git"
+  },
   "description": "Workflow utility",
   "main": "app.js",
   "engines": {
@@ -16,7 +20,6 @@
     "@google-cloud/datastore": "1.1.0",
     "body-parser": "1.18.2",
     "express": "4.15.4",
-    "express-validator": "^4.3.0",
     "pug": "2.0.0-rc.4"
   },
   "devDependencies": {

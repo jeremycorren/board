@@ -1,20 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { body, validationResult } = require('express-validator/check');
 
 function getModel() {
 	return require('./../models/model');
 }
 
 function filterList(req, res) {
-   getModel().list(req.body.filter, (err, entities) => {
-      if (err) {
-         res.end(err);
-         return;
+   getModel().list(
+      req.body.filter ? req.body.filter : null, 
+      req.body.sort ? req.body.sort : null, 
+      (err, entities) => {
+         if (err) {
+            res.end(err);
+            return;
+         }
+         res.render('list.pug', { cards: entities });
       }
-
-      res.render('list.pug', { cards: entities });
-   });
+   );
 }
 
 const router = express.Router();
@@ -25,12 +27,11 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-   getModel().list(null, (err, entities) => {
+   getModel().list(null, null, (err, entities) => {
       if (err) {
          res.end(err);
          return;
       }
-
       res.render('list.pug', { cards: entities });
    });
 });

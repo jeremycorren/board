@@ -1,31 +1,28 @@
 extends base.pug
 
 block content
-	a(href='/board/add', class='btn btn-success btn-sm')
-		span.glyphicon.glyphicon-plus
-		span &nbsp; New Card
-
-	hr
-
+	if !cards.length
+		p No cards found.
+	
 	each card in cards
 		.media
 			.media-body
-				a(href=`/board/${card.id}/`)= card.task
-				p= card.description
+				.panel.panel-default
+					.panel-heading
+						a(href=`/board/${card.id}/`)= card.task
+					.panel-body
+						p= card.description
 				
-				form(method='POST')
-					.form-group
-						input.form-control(
-							type='text'
-							name='filter'
-							id='filter'
-							value=card.category
-						)
-					.form-group
-						button.btn.btn-info.btn-xs(
-							type='submit'
-							title='Filter cards by this category'
-						)= card.category
-
-	if !cards.length
-		p No cards found.
+						form(method='POST')
+							.form-group
+								input.form-control.filter-btn(
+									type='text'
+									name='filter'
+									id='filter'
+									value=card.category
+								)
+							.form-group
+								button.btn.btn-info.btn-xs(
+									type='submit'
+									title='Filter cards by this category'
+										)= card.category

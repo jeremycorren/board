@@ -34,6 +34,7 @@ function update(id, data, callback) {
       cardKey = ds.key([kind, parseInt(id, 10)]);
    } else {
       cardKey = ds.key(kind);
+      data.created = new Date();
    }
 
    const entity = {
@@ -72,12 +73,15 @@ function _delete(id, callback) {
    ds.delete(cardKey, callback);
 }
 
-function list(filter, callback) {
+function list(filter, sort, callback) {
    let query;
    if (filter) { 
-      query = ds.createQuery([kind]).filter('category', '=', filter);
+      query = ds.createQuery([kind])
+         .filter('category', '=', filter)
+         .order('created', { descending: true });
    } else {
-      query = ds.createQuery([kind]);
+      query = ds.createQuery([kind])
+         .order('created', { descending: true });
    }
 
    ds.runQuery(query, (err, entities, nextQuery) => {

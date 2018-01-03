@@ -1,0 +1,7 @@
+indexes:
+
+- kind: Card
+  properties:
+  - name: category
+  - name: created
+    direction: desc

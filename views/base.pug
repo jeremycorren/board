@@ -6,11 +6,15 @@ html(lang='en')
 		link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css")
 		link(rel='stylesheet', href='/css/style.css', type='text/css')
 	body
-		.navbar.navbar-default
+		.navbar.navbar-default.navbar-static-top
 			.container
 				.navbar-header
 					.navbar-brand
-						a(href="/board") Board
+						a(href='/board') Board
+					a.btn.btn-default.navbar-btn.btn-sm(href='/board/add')
+						span.glyphicon.glyphicon-plus
+						span &nbsp; New Card
+
 
 		.container
 			block content
