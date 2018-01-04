@@ -28,11 +28,11 @@ block content
 					value=card.category
 					placeholder='Enter category...'
 				)
-					option(disabled selected) Select category...
-					option(value='Finance') Finance
-					option(value='Bills') Bills
-					option(value='Music') Music
-					option(value='Code') Code
+					option(disabled, selected = !selected) Select category...
+					option(value='Finance', selected = selected === 'Finance') Finance
+					option(value='Bills', selected = selected === 'Bills') Bills
+					option(value='Music', selected = selected === 'Music') Music
+					option(value='Code', selected = selected === 'Code') Code
 		.form-group
 		button.btn.btn-success.btn-sm(
 			type='submit'

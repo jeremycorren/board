@@ -5,3 +5,9 @@ indexes:
   - name: category
   - name: created
     direction: desc
+
+- kind: Card
+  properties:
+  - name: status
+  - name: created
+    direction: desc

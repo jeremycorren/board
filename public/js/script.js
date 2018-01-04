@@ -1,6 +1,4 @@
-$(function() {
-	
-	
+$(function() { // condense?
 	$('#collapse-open').click(function() {
 		$('.glyphicon-collapse-open').click();
 		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
@@ -16,6 +14,15 @@ $(function() {
 	});
 
 	$('.glyphicon-collapse-progress').click(function() {
+      $(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+   });
+
+   $('#collapse-complete').click(function() {
+		$('.glyphicon-collapse-complete').click();
+		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+	});
+
+	$('.glyphicon-collapse-complete').click(function() {
       $(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
    });
 });

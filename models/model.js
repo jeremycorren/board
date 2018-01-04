@@ -33,21 +33,40 @@ function update(id, data, callback) {
    let cardKey;
    if (id) {
       cardKey = ds.key([kind, parseInt(id, 10)]);
+      ds.get(cardKey, (err, entity) => {
+         if (!err && !entity) {
+            err = { code: 404, message: 'Not found'};
+         }
+
+         if (err) {
+            callback(err);
+            return;
+         }
+
+         entity.task = data.task;
+         entity.description = data.description;
+         entity.category = data.category;
+
+         ds.save(entity, (err) => {
+            const data = fromDatastore(entity);
+            callback(err, err ? null : data);
+         });
+      });
    } else {
       cardKey = ds.key(kind);
       data.created = new Date();
       data.status = 'OPEN';
-   }
 
-   const entity = {
-      key: cardKey,
-      data: toDatastore(data, ['description'])
-   }
+      const entity = {
+         key: cardKey,
+         data: toDatastore(data, ['description'])
+      }
 
-   ds.save(entity, (err) => {
-      data.id = entity.key.id;
-      callback(err, err ? null : data);
-   });
+      ds.save(entity, (err) => {
+         data.id = entity.key.id;
+         callback(err, err ? null : data);
+      });
+   }
 }
 
 function updateStatus(id, status, callback) {
@@ -95,20 +114,26 @@ function _delete(id, callback) {
 
 function list(category, status, callback) {
    let query;
-   if (category) { 
+   if (category && status) {
+      query = ds.createQuery([kind])
+         .filter('category', '=', category)
+         .filter('status', '=', status)
+         .order('created', { descending: true });
+   } else if (category && !status) { 
       query = ds.createQuery([kind])
          .filter('category', '=', category)
          .order('created', { descending: true });
-   } else if (status) {
+   } else if (status && !category) {
       query = ds.createQuery([kind])
          .filter('status', '=', status)
+         .order('created', { descending: true });
    } else {
       query = ds.createQuery([kind])
          .order('created', { descending: true });
    }
 
    ds.runQuery(query, (err, entities, nextQuery) => {
-      if (err) {
+      if (err) { console.log(err)
          callback(err);
          return;
       }

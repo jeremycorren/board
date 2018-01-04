@@ -6,17 +6,31 @@ function getModel() {
 }
 
 function filterList(req, res) {
-   getModel().list(
-      req.body.filter ? req.body.filter : null,
-      null,
-      (err, entities) => {
+   getModel().list(req.body.filter, 'OPEN', (err, openEntities) => {
+      if (err) {
+         res.end(err);
+         return;
+      }
+
+      getModel().list(req.body.filter, 'PROGRESS', (err, progressEntities) => {
          if (err) {
             res.end(err);
             return;
          }
-         res.render('list.pug', { cards: entities });
-      }
-   );
+
+         getModel().list(req.body.filter, 'COMPLETE', (err, completeEntities) => {
+            if (err) {
+               res.end(err);
+               return;
+            }
+            res.render('list.pug', { 
+               openCards: openEntities,
+               progressCards: progressEntities,
+               completeCards: completeEntities
+            });
+         });
+      });
+   });
 }
 
 const router = express.Router();
@@ -26,26 +40,7 @@ router.use((req, res, next) => {
    next();
 });
 
-router.get('/', (req, res) => {
-   getModel().list(null, 'OPEN', (err, openEntities) => {
-      if (err) {
-         res.end(err);
-         return;
-      }
-
-      getModel().list(null, 'PROGRESS', (err, progressEntities) => {
-         if (err) {
-            res.end(err);
-            return;
-         }
-
-         res.render('list.pug', { 
-            openCards: openEntities,
-            progressCards: progressEntities 
-         });
-      });
-   });
-});
+router.get('/', filterList);
 
 router.post('/', filterList);
 
@@ -94,8 +89,8 @@ router.get('/:card/edit', (req, res, next) => {
       if (err) {
          next(err);
          return;
-      }
-      res.render('form.pug', { card: entity });
+      } console.log(entity)
+      res.render('form.pug', { card: entity, selected: entity.category });
    });
 });
 

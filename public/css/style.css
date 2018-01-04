@@ -11,16 +11,24 @@ textarea {
 }
 
 .media .panel {
-	width: 180px;
+	width: 200px;
 	margin-bottom: 0px;
 }
 
 form .panel-default {
-	width: 200px;
+	width: 230px;
 }
 
 .form-control, .media-body {
 	width: 160px;
+}
+
+.outer-panel {
+	width: 240px;
+}
+
+.placeholder {
+	opacity: 0.5;
 }
 
 #btn-filter {
@@ -43,6 +51,10 @@ form .panel-default {
 	width: 135px;
 }
 
-#outer-panel {
-	width: 220px;
+#push-left {
+	padding-left: 8px;
+}
+
+#push-right {
+	padding-left: 2px;
 }
