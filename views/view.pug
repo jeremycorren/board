@@ -1,22 +1,15 @@
 extends base.pug
 
 block content
-	a(href='/board/add', class='btn btn-success btn-sm')
-		span.glyphicon.glyphicon-plus
-		span &nbsp; New Card
-
-	hr
-
 	.media
 		.media-body
 			.panel.panel-default
-				.panel-heading
-					h5= card.task
+				.panel-heading= card.task
 				.panel-body
 					p= card.description
 					form(method='POST')
 						.form-group
-							input.form-control.filter-btn(
+							input.form-control.hidden(
 								type='text'
 								name='filter'
 								id='filter'
@@ -27,7 +20,7 @@ block content
 								type='submit'
 								title='Filter cards by this category'
 							)= card.category
-					p
+			p
 
 			a(href=`/board/${card.id}/edit`, class='btn btn-success btn-sm')
 				i.glyphicon.glyphicon-edit

@@ -7,8 +7,8 @@ function getModel() {
 
 function filterList(req, res) {
    getModel().list(
-      req.body.filter ? req.body.filter : null, 
-      req.body.sort ? req.body.sort : null, 
+      req.body.filter ? req.body.filter : null,
+      null,
       (err, entities) => {
          if (err) {
             res.end(err);
@@ -27,16 +27,40 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-   getModel().list(null, null, (err, entities) => {
+   getModel().list(null, 'OPEN', (err, openEntities) => {
       if (err) {
          res.end(err);
          return;
       }
-      res.render('list.pug', { cards: entities });
+
+      getModel().list(null, 'PROGRESS', (err, progressEntities) => {
+         if (err) {
+            res.end(err);
+            return;
+         }
+
+         res.render('list.pug', { 
+            openCards: openEntities,
+            progressCards: progressEntities 
+         });
+      });
    });
 });
 
 router.post('/', filterList);
+
+router.post('/push', (req, res) => {
+   const array = (req.body.idStatus).split(',');
+   const id = array[0];
+   const status = array[1];
+   getModel().updateStatus(id, status, (err) => {
+      if (err) {
+         next(err);
+         return;
+      }
+      res.redirect('/');
+   });
+});
 
 router.get('/add', (req, res) => {
    res.render('form.pug', { card: {} });

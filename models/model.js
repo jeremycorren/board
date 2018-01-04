@@ -28,6 +28,7 @@ function toDatastore (obj, nonIndexed) {
    return results;
 }
 
+// we lose data here in Edit
 function update(id, data, callback) {
    let cardKey;
    if (id) {
@@ -35,6 +36,7 @@ function update(id, data, callback) {
    } else {
       cardKey = ds.key(kind);
       data.created = new Date();
+      data.status = 'OPEN';
    }
 
    const entity = {
@@ -46,6 +48,25 @@ function update(id, data, callback) {
       data.id = entity.key.id;
       callback(err, err ? null : data);
    });
+}
+
+function updateStatus(id, status, callback) {
+   const cardKey = ds.key([kind, parseInt(id, 10)]);
+   ds.get(cardKey, (err, entity) => {
+      if (!err & !entity) {
+         err = { code: 404, message: 'Not found'};
+      }
+
+      if (err) {
+         callback(err);
+         return;
+      }
+
+      entity.status = status;
+      ds.save(entity, (err) => {
+         callback(err);
+      });
+   })
 }
 
 function create(data, callback) {
@@ -63,7 +84,6 @@ function read(id, callback) {
          callback(err);
          return;
       }
-
       callback(null, fromDatastore(entity));
    });
 }
@@ -73,12 +93,15 @@ function _delete(id, callback) {
    ds.delete(cardKey, callback);
 }
 
-function list(filter, sort, callback) {
+function list(category, status, callback) {
    let query;
-   if (filter) { 
+   if (category) { 
       query = ds.createQuery([kind])
-         .filter('category', '=', filter)
+         .filter('category', '=', category)
          .order('created', { descending: true });
+   } else if (status) {
+      query = ds.createQuery([kind])
+         .filter('status', '=', status)
    } else {
       query = ds.createQuery([kind])
          .order('created', { descending: true });
@@ -96,6 +119,7 @@ function list(filter, sort, callback) {
 module.exports = {
    create,
    update,
+   updateStatus,
    read,
    delete: _delete,
    list

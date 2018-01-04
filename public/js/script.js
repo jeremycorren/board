@@ -1,3 +1,25 @@
+$(function() {
+	
+	
+	$('#collapse-open').click(function() {
+		$('.glyphicon-collapse-open').click();
+		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+	});
+
+	$('.glyphicon-collapse-open').click(function() {
+      $(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+   });
+
+   $('#collapse-progress').click(function() {
+		$('.glyphicon-collapse-progress').click();
+		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+	});
+
+	$('.glyphicon-collapse-progress').click(function() {
+      $(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+   });
+});
+
 const task = document.getElementById('task');
 const description = document.getElementById('description');
 const category = document.getElementById('category');
@@ -12,3 +34,4 @@ if (task && description && category) {
 		}
 	}, 100);
 }
+
