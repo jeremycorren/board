@@ -1,5 +1,78 @@
 extends base.pug
 
+mixin listCards(panelType, header, cards, listCollapseId, col1, col2, col3, col4, display1, display2, cardCollapseId, collapseTarget, pushVal1, pushText1, pushVal2, pushText2)
+	.panel.outer-panel(class=panelType)
+		.panel-heading
+				.row
+					.col-xs-8
+						h4= header
+					.col-xs-4(id='collapse-col')
+						if cards.length
+							span(id=listCollapseId).glyphicon.glyphicon-sm.glyphicon-chevron-down
+		.panel-body
+				if !cards.length
+					span.placeholder Push a card here
+				else 
+					each card, index in cards
+						.media
+							.media-body
+								.panel.panel-default
+									.panel-heading
+										.row
+											div(id='push-left', class=`${display1} col-xs-${col1}`)
+												form(method='POST', action='/board/push')
+													input.form-control.hidden(
+														type='text'
+														name='idStatus'
+														id='push'
+														value=`${card.id},${pushVal1}`
+													)
+													button.btn.btn-link.btn-xs(
+														id='push-btn'
+														type='submit'
+														title=`Push to ${pushText1}`
+													)
+														span.glyphicon.glyphicon-sm.glyphicon-arrow-left
+											div.hidden(class=`col-xs-${col2}`)
+												span.glyphicon-chevron-down(
+														class=cardCollapseId
+														data-toggle='collapse' 
+														href=`.${collapseTarget}${index}`
+													)
+											div(class=`col-xs-${col3}`)
+												a(href=`/board/${card.id}/`)= card.task
+											div(id='push-right', class=`${display2} col-xs-${col4}`)
+												form(method='POST', action='/board/push')
+													input.form-control.hidden(
+														type='text'
+														name='idStatus'
+														id='push'
+														value=`${card.id},${pushVal2}`
+													)
+													button.btn.btn-link.btn-xs(
+														id='push-btn'
+														type='submit'
+														title=`Push to ${pushText2}`
+													)
+														span.glyphicon.glyphicon-sm.glyphicon-arrow-right
+
+									.panel-collapse.collapse.in(class=`${collapseTarget}${index}`)
+										.panel-body
+											p= card.description
+								
+											form(method='POST', action='/board')
+												.form-group
+													input.form-control.hidden(
+														type='text'
+														name='filter'
+														id='filter'
+														value=card.category
+													)
+												button.btn.btn-info.btn-xs(
+													type='submit'
+													title='Filter cards by this category'
+												)= card.category
+
 block content
 	if !openCards.length && !progressCards.length && !completeCards.length
 		span Click on 
@@ -8,190 +81,9 @@ block content
 	else
 		.row
 			.col-sm-3
-				.panel.panel-info.outer-panel
-					.panel-heading
-							.row
-								.col-xs-8
-									h4= 'Open'
-								.col-xs-4(id='collapse-col')
-									if openCards.length
-										span(id='collapse-open').glyphicon.glyphicon-sm.glyphicon-chevron-down
-					.panel-body
-							if !openCards.length
-								span.placeholder Push a card here
-							else
-								each card, index in openCards
-									.media
-										.media-body
-											.panel.panel-default
-
-												.panel-heading
-													.row
-														.col-xs-9
-															a(href=`/board/${card.id}/`)= card.task
-														.col-xs-1.hidden
-																span.glyphicon-chevron-down.glyphicon-collapse-open(
-																	data-toggle='collapse' 
-																	href=`#collapse${index}`
-																)
-														.col-xs-1
-															form(method='POST', action='/board/push')
-																input.form-control.hidden(
-																	type='text'
-																	name='idStatus'
-																	id='push'
-																	value=`${card.id},PROGRESS`
-																)
-																button.btn.btn-link.btn-xs(
-																	id='push-btn'
-																	type='submit'
-																	title='Push to In Progress'
-																)
-																	span.glyphicon.glyphicon-sm.glyphicon-arrow-right
-												
-												.panel-collapse.collapse.in(id=`collapse${index}`)
-													.panel-body
-														p= card.description
-											
-														form(method='POST', action='/board')
-															.form-group
-																input.form-control.hidden(
-																	type='text'
-																	name='filter'
-																	id='filter'
-																	value=card.category
-																)
-															button.btn.btn-info.btn-xs(
-																type='submit'
-																title='Filter cards by this category'
-															)= card.category
-
+				+listCards('panel-info', 'Open', openCards, 'collapse-open', '0', '1', '10', '1', 'hidden', '', 'glyphicon-collapse-open', 'open-collapse', '', '', 'PROGRESS', 'In Progress')
 			.col-sm-3
-				.panel.panel-warning.outer-panel
-					.panel-heading
-							.row
-								.col-xs-8
-									h4= 'In Progress'
-								.col-xs-4(id='collapse-col')
-									if progressCards.length
-										span(id='collapse-progress').glyphicon.glyphicon-sm.glyphicon-chevron-down
-					.panel-body
-							if !progressCards.length
-								span.placeholder Push a card here
-							else 
-								each card, index in progressCards
-									.media
-										.media-body
-											.panel.panel-default
-
-												.panel-heading
-													.row
-														.col-xs-2(id='push-left')
-															form(method='POST', action='/board/push')
-																input.form-control.hidden(
-																	type='text'
-																	name='idStatus'
-																	id='push'
-																	value=`${card.id},OPEN`
-																)
-																button.btn.btn-link.btn-xs(
-																	id='push-btn'
-																	type='submit'
-																	title='Push to Open'
-																)
-																	span.glyphicon.glyphicon-sm.glyphicon-arrow-left
-														.col-xs-1.hidden
-															span.glyphicon-chevron-down.glyphicon-collapse-open(
-																	data-toggle='collapse' 
-																	href=`#collapse${index}`
-																)
-														.col-xs-8
-															a(href=`/board/${card.id}/`)= card.task
-														.col-xs-1(id='push-right')
-															form(method='POST', action='/board/push')
-																input.form-control.hidden(
-																	type='text'
-																	name='idStatus'
-																	id='push'
-																	value=`${card.id},COMPLETE`
-																)
-																button.btn.btn-link.btn-xs(
-																	id='push-btn'
-																	type='submit'
-																	title='Push to Complete'
-																)
-																	span.glyphicon.glyphicon-sm.glyphicon-arrow-right
-												.panel-collapse.collapse.in(id=`collapse${index}`)
-													.panel-body
-														p= card.description
-											
-														form(method='POST', action='/board')
-															.form-group
-																input.form-control.hidden(
-																	type='text'
-																	name='filter'
-																	id='filter'
-																	value=card.category
-																)
-															button.btn.btn-info.btn-xs(
-																type='submit'
-																title='Filter cards by this category'
-															)= card.category
+				+listCards('panel-warning', 'In Progress', progressCards, 'collapse-progress', '2', '1', '8', '1', '', '', 'glyphicon-collapse-progress', 'progress-collapse', 'OPEN', 'Open', 'COMPLETE', 'Complete')
 			.col-sm-5
-				.panel.panel-success.outer-panel
-					.panel-heading
-							.row
-								.col-xs-8
-									h4= 'Complete'
-								.col-xs-4(id='collapse-col')
-									if completeCards.length
-										span(id='collapse-complete').glyphicon.glyphicon-sm.glyphicon-chevron-down
-					.panel-body
-							if !completeCards.length
-								span.placeholder Push a card here
-							else 
-								each card, index in completeCards
-									.media
-										.media-body
-											.panel.panel-default
-
-												.panel-heading
-													.row
-														.col-xs-1(id='push-left')
-															form(method='POST', action='/board/push')
-																input.form-control.hidden(
-																	type='text'
-																	name='idStatus'
-																	id='push'
-																	value=`${card.id},PROGRESS`
-																)
-																button.btn.btn-link.btn-xs(
-																	id='push-btn'
-																	type='submit'
-																	title='Push to In Progress'
-																)
-																	span.glyphicon.glyphicon-sm.glyphicon-arrow-left
-														.col-xs-1.hidden
-															span.glyphicon-chevron-down.glyphicon-collapse-open(
-																	data-toggle='collapse' 
-																	href=`#collapse${index}`
-																)
-														.col-xs-10
-															a(href=`/board/${card.id}/`)= card.task
-												.panel-collapse.collapse.in(id=`collapse${index}`)
-													.panel-body
-														p= card.description
-											
-														form(method='POST', action='/board')
-															.form-group
-																input.form-control.hidden(
-																	type='text'
-																	name='filter'
-																	id='filter'
-																	value=card.category
-																)
-															button.btn.btn-info.btn-xs(
-																type='submit'
-																title='Filter cards by this category'
-															)= card.category
-
+				+listCards('panel-success', 'Complete', completeCards, 'collapse-complete', '1', '1', '10', '1', '', 'hidden', 'glyphicon-collapse-complete', 'complete-collapse', 'PROGRESS', 'In Progress', '', '')
+				

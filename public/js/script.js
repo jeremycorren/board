@@ -1,14 +1,17 @@
-$(function() { // condense?
+$(function() {
 	$('#collapse-open').click(function() {
 		$('.glyphicon-collapse-open').click();
 		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
 	});
 
 	$('.glyphicon-collapse-open').click(function() {
-      $(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+    	$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
    });
+});
 
-   $('#collapse-progress').click(function() {
+
+$(function() {
+ 	$('#collapse-progress').click(function() {
 		$('.glyphicon-collapse-progress').click();
 		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
 	});
@@ -16,7 +19,9 @@ $(function() { // condense?
 	$('.glyphicon-collapse-progress').click(function() {
       $(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
    });
+});
 
+$(function() {
    $('#collapse-complete').click(function() {
 		$('.glyphicon-collapse-complete').click();
 		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");

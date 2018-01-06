@@ -5,7 +5,7 @@ function getModel() {
 	return require('./../models/model');
 }
 
-function filterList(req, res) {
+function queryCards(req, res) {
    getModel().list(req.body.filter, 'OPEN', (err, openEntities) => {
       if (err) {
          res.end(err);
@@ -40,9 +40,9 @@ router.use((req, res, next) => {
    next();
 });
 
-router.get('/', filterList);
+router.get('/', queryCards);
 
-router.post('/', filterList);
+router.post('/', queryCards);
 
 router.post('/push', (req, res) => {
    const array = (req.body.idStatus).split(',');
@@ -82,7 +82,7 @@ router.get('/:card', (req, res, next) => {
    });
 });
 
-router.post('/:card', filterList);
+router.post('/:card', queryCards);
 
 router.get('/:card/edit', (req, res, next) => {
    getModel().read(req.params.card, (err, entity) => {
