@@ -6,12 +6,15 @@ mixin listCards(panelType, header, cards, listCollapseId, col1, col2, col3, col4
 				.row
 					.col-xs-8
 						h4= header
-					.col-xs-4(id='collapse-col')
+					.col-xs-4#collapse-col
 						if cards.length
 							span(id=listCollapseId).glyphicon.glyphicon-sm.glyphicon-chevron-down
 		.panel-body
 				if !cards.length
-					span.placeholder Push a card here
+					if header != 'Open' && header != 'Recurring'
+						span.placeholder Push a card here
+					else
+						span.placeholder Add a card here
 				else 
 					each card, index in cards
 						.media
@@ -19,16 +22,14 @@ mixin listCards(panelType, header, cards, listCollapseId, col1, col2, col3, col4
 								.panel.panel-default
 									.panel-heading
 										.row
-											div(id='push-left', class=`${display1} col-xs-${col1}`)
+											div.push-left(class=`${display1} col-xs-${col1}`)
 												form(method='POST', action='/board/push')
 													input.form-control.hidden(
 														type='text'
 														name='idStatus'
-														id='push'
 														value=`${card.id},${pushVal1}`
 													)
 													button.btn.btn-link.btn-xs(
-														id='push-btn'
 														type='submit'
 														title=`Push to ${pushText1}`
 													)
@@ -41,16 +42,14 @@ mixin listCards(panelType, header, cards, listCollapseId, col1, col2, col3, col4
 													)
 											div(class=`col-xs-${col3}`)
 												a(href=`/board/${card.id}/`)= card.task
-											div(id='push-right', class=`${display2} col-xs-${col4}`)
+											div.push-right(class=`${display2} col-xs-${col4}`)
 												form(method='POST', action='/board/push')
 													input.form-control.hidden(
 														type='text'
 														name='idStatus'
-														id='push'
 														value=`${card.id},${pushVal2}`
 													)
 													button.btn.btn-link.btn-xs(
-														id='push-btn'
 														type='submit'
 														title=`Push to ${pushText2}`
 													)
@@ -84,6 +83,8 @@ block content
 				+listCards('panel-info', 'Open', openCards, 'collapse-open', '0', '1', '10', '1', 'hidden', '', 'glyphicon-collapse-open', 'open-collapse', '', '', 'PROGRESS', 'In Progress')
 			.col-sm-3
 				+listCards('panel-warning', 'In Progress', progressCards, 'collapse-progress', '2', '1', '8', '1', '', '', 'glyphicon-collapse-progress', 'progress-collapse', 'OPEN', 'Open', 'COMPLETE', 'Complete')
-			.col-sm-5
+			.col-sm-3
 				+listCards('panel-success', 'Complete', completeCards, 'collapse-complete', '1', '1', '10', '1', '', 'hidden', 'glyphicon-collapse-complete', 'complete-collapse', 'PROGRESS', 'In Progress', '', '')
+			.col-sm-3
+				+listCards('panel-default', 'Recurring', recurCards, 'collapse-recur', '1', '1', '10', '1', 'hidden', 'hidden', 'glyphicon-collapse-recur', 'recur-collapse', '', '', '', '')
 				

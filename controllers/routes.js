@@ -6,27 +6,32 @@ function getModel() {
 }
 
 function queryCards(req, res) {
-   getModel().list(req.body.filter, 'OPEN', (err, openEntities) => {
+   getModel().list(req.body.filter, 'OPEN', null, (err, openEntities) => {
       if (err) {
          res.end(err);
          return;
       }
-
-      getModel().list(req.body.filter, 'PROGRESS', (err, progressEntities) => {
+      getModel().list(req.body.filter, 'PROGRESS', null, (err, progressEntities) => {
          if (err) {
             res.end(err);
             return;
          }
-
-         getModel().list(req.body.filter, 'COMPLETE', (err, completeEntities) => {
+         getModel().list(req.body.filter, 'COMPLETE', null, (err, completeEntities) => {
             if (err) {
                res.end(err);
                return;
             }
-            res.render('list.pug', { 
-               openCards: openEntities,
-               progressCards: progressEntities,
-               completeCards: completeEntities
+            getModel().list(req.body.filter, null, 'on', (err, recurEntities) => {
+               if (err) {
+                  res.end(err);
+                  return;
+               }
+               res.render('list.pug', { 
+                  openCards: openEntities,
+                  progressCards: progressEntities,
+                  completeCards: completeEntities,
+                  recurCards: recurEntities 
+               });
             });
          });
       });

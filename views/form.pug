@@ -2,38 +2,42 @@ extends base.pug
 
 block content
 	form(method='POST', id='create-form')
-		.panel.panel-default
+		.panel.panel-default.panel-form
 			.panel-heading
-				input.form-control(
+				input#task.form-control(
 					type='text'
 					name='task'
-					id='task'
 					value=card.task
 					placeholder='Enter task...'
 				)
 			.panel-body
 				.form-group
-					textarea.form-control(
+					textarea#description.form-control(
 						type='text'
 						name='description'
-						id='description'
 						value=card.description
 						placeholder='Enter description...'
 					) #{card.description}
-				select.form-control(
-					type='text'
-					name='category'
-					id='category'
-					form='create-form'
-					value=card.category
-					placeholder='Enter category...'
-				)
-					option(disabled, selected = !selected) Select category...
-					option(value='Finance', selected = selected === 'Finance') Finance
-					option(value='Bills', selected = selected === 'Bills') Bills
-					option(value='Music', selected = selected === 'Music') Music
-					option(value='Code', selected = selected === 'Code') Code
-		.form-group
+				.form-group
+					select#category.form-control(
+						type='text'
+						name='category'
+						value=card.category
+						placeholder='Enter category...'
+					)
+						option(disabled, selected = !selected) Select category...
+						option(value='Finance', selected = selected === 'Finance') Finance
+						option(value='Bills', selected = selected === 'Bills') Bills
+						option(value='Music', selected = selected === 'Music') Music
+						option(value='Code', selected = selected === 'Code') Code
+				.checkbox
+					label
+						input#recurring(
+							type='checkbox'
+							name='recurring'
+							value=card.recurring
+						)
+						| Recurring
 		button.btn.btn-success.btn-sm(
 			type='submit'
 			id='btn-success'

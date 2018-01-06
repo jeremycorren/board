@@ -6,6 +6,10 @@ textarea {
 	resize: none;
 }
 
+.checkbox {
+	margin-bottom: 0px;
+}
+
 .transparent {
 	opacity: 0;
 }
@@ -15,8 +19,12 @@ textarea {
 	margin-bottom: 0px;
 }
 
-form .panel-default {
-	width: 230px;
+.panel-view {
+	width: 170px !important;
+}
+
+.panel-form {
+	width: 195px !important;
 }
 
 .form-control, .media-body {
@@ -29,6 +37,14 @@ form .panel-default {
 
 .placeholder {
 	opacity: 0.5;
+}
+
+.push-left {
+	padding-left: 8px;
+}
+
+.push-right {
+	padding-left: 2px;
 }
 
 #btn-filter {
@@ -49,12 +65,4 @@ form .panel-default {
 
 #empty-query {
 	width: 135px;
-}
-
-#push-left {
-	padding-left: 8px;
-}
-
-#push-right {
-	padding-left: 2px;
 }

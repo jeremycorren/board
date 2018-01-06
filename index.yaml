@@ -11,3 +11,9 @@ indexes:
   - name: status
   - name: created
     direction: desc
+
+- kind: Card
+  properties:
+  - name: recurring
+  - name: created
+    direction: desc

@@ -32,6 +32,17 @@ $(function() {
    });
 });
 
+$(function() {
+   $('#collapse-recur').click(function() {
+		$('.glyphicon-collapse-recur').click();
+		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+	});
+
+	$('.glyphicon-collapse-recur').click(function() {
+      $(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+   });
+});
+
 const task = document.getElementById('task');
 const description = document.getElementById('description');
 const category = document.getElementById('category');

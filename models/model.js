@@ -28,7 +28,6 @@ function toDatastore (obj, nonIndexed) {
    return results;
 }
 
-// we lose data here in Edit
 function update(id, data, callback) {
    let cardKey;
    if (id) {
@@ -56,6 +55,9 @@ function update(id, data, callback) {
       cardKey = ds.key(kind);
       data.created = new Date();
       data.status = 'OPEN';
+      if (!data.recurring) {
+         data.recurring = 'off'
+      }
 
       const entity = {
          key: cardKey,
@@ -112,23 +114,28 @@ function _delete(id, callback) {
    ds.delete(cardKey, callback);
 }
 
-function list(category, status, callback) {
+function list(category, status, recur, callback) {
    let query;
-   if (category && status) {
+   if (category && recur) {
+      query = ds.createQuery([kind])
+         .filter('category', '=', category)
+         .filter('recurring', '=', recur)
+         .order('created', { descending: true });
+   } else if (category && status) {
       query = ds.createQuery([kind])
          .filter('category', '=', category)
          .filter('status', '=', status)
+         .filter('recurring', '=', 'off')
          .order('created', { descending: true });
-   } else if (category && !status) { 
-      query = ds.createQuery([kind])
-         .filter('category', '=', category)
-         .order('created', { descending: true });
-   } else if (status && !category) {
+   } 
+   else if (status && !category) {
       query = ds.createQuery([kind])
          .filter('status', '=', status)
+         .filter('recurring', '=', 'off')
          .order('created', { descending: true });
-   } else {
+   } else if (recur) {
       query = ds.createQuery([kind])
+         .filter('recurring', '=', recur)
          .order('created', { descending: true });
    }
 
