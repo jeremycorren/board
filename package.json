@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@google-cloud/nodejs-repo-tools": "1.4.17",
-    "nodemon": "^1.14.6"
+    "nodemon": "^1.14.11"
   },
   "cloud-repo-tools": {
     "test": {

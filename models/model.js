@@ -55,9 +55,6 @@ function update(id, data, callback) {
       cardKey = ds.key(kind);
       data.created = new Date();
       data.status = 'OPEN';
-      if (!data.recurring) {
-         data.recurring = 'off'
-      }
 
       const entity = {
          key: cardKey,
@@ -114,28 +111,16 @@ function _delete(id, callback) {
    ds.delete(cardKey, callback);
 }
 
-function list(category, status, recur, callback) {
+function list(category, status, callback) {
    let query;
-   if (category && recur) {
-      query = ds.createQuery([kind])
-         .filter('category', '=', category)
-         .filter('recurring', '=', recur)
-         .order('created', { descending: true });
-   } else if (category && status) {
+   if (category && status) {
       query = ds.createQuery([kind])
          .filter('category', '=', category)
          .filter('status', '=', status)
-         .filter('recurring', '=', 'off')
          .order('created', { descending: true });
-   } 
-   else if (status && !category) {
+   } else if (status && !category) {
       query = ds.createQuery([kind])
          .filter('status', '=', status)
-         .filter('recurring', '=', 'off')
-         .order('created', { descending: true });
-   } else if (recur) {
-      query = ds.createQuery([kind])
-         .filter('recurring', '=', recur)
          .order('created', { descending: true });
    }
 

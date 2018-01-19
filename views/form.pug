@@ -27,17 +27,10 @@ block content
 					)
 						option(disabled, selected = !selected) Select category...
 						option(value='Finance', selected = selected === 'Finance') Finance
+						option(value='Home', selected = selected === 'Home') Home
 						option(value='Bills', selected = selected === 'Bills') Bills
 						option(value='Music', selected = selected === 'Music') Music
 						option(value='Code', selected = selected === 'Code') Code
-				.checkbox
-					label
-						input#recurring(
-							type='checkbox'
-							name='recurring'
-							value=card.recurring
-						)
-						| Recurring
 		button.btn.btn-success.btn-sm(
 			type='submit'
 			id='btn-success'

@@ -1,48 +1,3 @@
-$(function() {
-	$('#collapse-open').click(function() {
-		$('.glyphicon-collapse-open').click();
-		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
-	});
-
-	$('.glyphicon-collapse-open').click(function() {
-    	$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
-   });
-});
-
-
-$(function() {
- 	$('#collapse-progress').click(function() {
-		$('.glyphicon-collapse-progress').click();
-		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
-	});
-
-	$('.glyphicon-collapse-progress').click(function() {
-      $(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
-   });
-});
-
-$(function() {
-   $('#collapse-complete').click(function() {
-		$('.glyphicon-collapse-complete').click();
-		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
-	});
-
-	$('.glyphicon-collapse-complete').click(function() {
-      $(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
-   });
-});
-
-$(function() {
-   $('#collapse-recur').click(function() {
-		$('.glyphicon-collapse-recur').click();
-		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
-	});
-
-	$('.glyphicon-collapse-recur').click(function() {
-      $(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
-   });
-});
-
 const task = document.getElementById('task');
 const description = document.getElementById('description');
 const category = document.getElementById('category');
@@ -57,4 +12,22 @@ if (task && description && category) {
 		}
 	}, 100);
 }
+
+function collapse(master, detail) {
+	$(master).click(function() {
+		$(detail).click();
+		$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+	});
+
+	$(detail).click(function() {
+    	$(this).toggleClass("glyphicon-chevron-down").toggleClass("glyphicon-chevron-up");
+   });
+}
+
+$(function() {
+	collapse('#collapse-open', '.glyphicon-collapse-open');
+	collapse('#collapse-progress', '.glyphicon-collapse-progress');
+	collapse('#collapse-complete', '.glyphicon-collapse-complete');
+	collapse('#collapse-recur', '.glyphicon-collapse-recur');
+});
 
