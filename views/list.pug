@@ -54,11 +54,9 @@ mixin listCards(panelType, header, cards, listCollapseId, col1, col2, col3, col4
 														title=`Push to ${pushText2}`
 													)
 														span.glyphicon.glyphicon-sm.glyphicon-arrow-right
-
 									.panel-collapse.collapse.in(class=`${collapseTarget}${index}`)
 										.panel-body
 											p= card.description
-								
 											form(method='POST', action='/board')
 												.form-group
 													input.form-control.hidden(
@@ -79,10 +77,10 @@ block content
 		span  to get started.
 	else
 		.row
-			.col-sm-3
+			.col-sm-4
 				+listCards('panel-info', 'Open', openCards, 'collapse-open', '0', '1', '10', '1', 'hidden', '', 'glyphicon-collapse-open', 'open-collapse', '', '', 'PROGRESS', 'In Progress')
-			.col-sm-3
+			.col-sm-4
 				+listCards('panel-warning', 'In Progress', progressCards, 'collapse-progress', '2', '1', '8', '1', '', '', 'glyphicon-collapse-progress', 'progress-collapse', 'OPEN', 'Open', 'COMPLETE', 'Complete')
-			.col-sm-3
+			.col-sm-4
 				+listCards('panel-success', 'Complete', completeCards, 'collapse-complete', '1', '1', '10', '1', '', 'hidden', 'glyphicon-collapse-complete', 'complete-collapse', 'PROGRESS', 'In Progress', '', '')
-				
+	script(src='/js/list.js')

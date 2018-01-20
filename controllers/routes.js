@@ -1,36 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-function getModel() {
-	return require('./../models/model');
-}
-
-function loadCards(req, res) {
-   getModel().list(req.body.filter, 'OPEN', (err, openEntities) => {
-      if (err) {
-         res.end(err);
-         return;
-      }
-      getModel().list(req.body.filter, 'PROGRESS', (err, progressEntities) => {
-         if (err) {
-            res.end(err);
-            return;
-         }
-         getModel().list(req.body.filter, 'COMPLETE', (err, completeEntities) => {
-            if (err) {
-               res.end(err);
-               return;
-            }
-            res.render('list.pug', { 
-               openCards: openEntities,
-               progressCards: progressEntities,
-               completeCards: completeEntities
-            });
-         });
-      });
-   });
-}
-
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use((req, res, next) => {
@@ -112,5 +82,35 @@ router.get('/:card/delete', (req, res, next) => {
       res.redirect(req.baseUrl);
    });
 });
+
+function getModel() {
+   return require('./../models/model');
+}
+
+function loadCards(req, res) {
+   getModel().list(req.body.filter, (err, entities) => {
+      if (err) {
+         res.end(err);
+         return;
+      }
+
+      let open = [], progress = [], complete = [];
+      entities.forEach(entity => {
+         if (entity.status === 'OPEN') {
+            open.push(entity);
+         } else if (entity.status === 'PROGRESS') {
+            progress.push(entity);
+         } else if (entity.status === 'COMPLETE') {
+            complete.push(entity);
+         }
+      });
+
+      res.render('list.pug', { 
+         openCards: open,
+         progressCards: progress,
+         completeCards: complete
+      });
+   });
+}
 
 module.exports = router;

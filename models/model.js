@@ -111,16 +111,14 @@ function _delete(id, callback) {
    ds.delete(cardKey, callback);
 }
 
-function list(category, status, callback) {
+function list(category, callback) {
    let query;
-   if (category && status) {
+   if (category) {
       query = ds.createQuery([kind])
          .filter('category', '=', category)
-         .filter('status', '=', status)
          .order('created', { descending: true });
-   } else if (status && !category) {
+   } else {
       query = ds.createQuery([kind])
-         .filter('status', '=', status)
          .order('created', { descending: true });
    }
 
